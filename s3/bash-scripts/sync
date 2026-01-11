@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# Exit immediately if any command exits with a non-zero status
+set -e
+
+# Check for bucket name
+if [ -z "$1" ]; then
+    echo "No bucket name provided. Please provide a bucket name: <bucket-name> [region]"
+    exit 1
+fi
+
+BUCKET_NAME="$1"
+
+if [ -z "$2" ]; then
+    echo "No file name prefix provided. Please provide a file name prefix: <file-name-prefix>"
+    exit 1
+fi
+
+FILE_NAME_PREFIX="$2"
+
+# To store the files locally
+OUTPUT_DIR="./tmp/s3-bash-scripts"
+
+# Remove existing files
+rm -rf $OUTPUT_DIR/*
+
+# Create output directory if it doesn't exist
+mkdir -p $OUTPUT_DIR
+
+# Generate random number of files between 1 and 10
+NUM_FILES=$((RANDOM % 10 + 1))
+
+echo "Generating $NUM_FILES random files..."
+
+for ((i=1; i<=NUM_FILES; i++)); do
+    RANDOM_FILE_NAME="$OUTPUT_DIR/${FILE_NAME_PREFIX}_$i.txt"
+    # dd - converts and copies a file
+    dd if=/dev/urandom of=$RANDOM_FILE_NAME bs=1024 count=$RANDOM 2>/dev/null 
+done
+
+tree $OUTPUT_DIR
+
+
+# Check if dryrun is requested
+DRYRUN=""
+if [ "$3" == "dryrun" ]; then
+    DRYRUN="--dryrun"
+fi
+
+aws s3 sync $OUTPUT_DIR \
+s3://$BUCKET_NAME/assets \
+$DRYRUN
