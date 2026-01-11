@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Exit immediately if any command returns a non-zero status
+set -e
+
+# Check for bucket name
+if [ -z "$1" ]; then
+    echo "No bucket name provided. Please provide a bucket name: <bucket-name>"
+    exit 1
+fi
+
+# Check for object key
+if [ -z "$2" ]; then
+    echo "No object key provided. Please provide an object key: <object-key>"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+OBJECT_KEY=$2
+
+echo "Deleting object: \"$OBJECT_KEY\" from bucket: \"$BUCKET_NAME\""
+
+# Construct JSON for single object deletion
+DELETE_JSON="{\"Objects\": [{\"Key\": \"$OBJECT_KEY\"}]}"
+
+# Delete Objects: https://docs.aws.amazon.com/cli/latest/reference/s3api/delete-objects.html
+aws s3api delete-objects \
+--bucket "$BUCKET_NAME" \
+--delete "$DELETE_JSON"

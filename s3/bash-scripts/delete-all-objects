@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Exit immediately if any command returns a non-zero status
+set -e
+
+# Check for bucket name
+if [ -z "$1" ]; then
+    echo "No bucket name provided. Please provide a bucket name: <bucket-name>"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+
+echo "Deleting all objects from bucket: \"$BUCKET_NAME\""
+
+aws s3api list-objects \
+--bucket $BUCKET_NAME  \
+--query Contents[].Key \
+| jq -n '{Objects: [inputs | .[] | {Key: .}]}' > /tmp/delete_objects.json
+
+# Delete Objects: https://docs.aws.amazon.com/cli/latest/reference/s3api/delete-objects.html
+aws s3api delete-objects \
+--bucket $BUCKET_NAME \
+--delete file:///tmp/delete_objects.json
+--query Contents[].Key \
+| jq -n '{Objects: [inputs | .[] | {Key: .}]}'

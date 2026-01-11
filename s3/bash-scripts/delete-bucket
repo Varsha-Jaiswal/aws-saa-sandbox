@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Check if bucket name is provided
+if [ -z "$1" ]; then
+    echo "No bucket name provided. Usage: ./delete-bucket <bucket-name>"
+    exit 1
+fi
+
+BUCKET_NAME="$1"
+echo "Deleting bucket \"$BUCKET_NAME\""
+
+# Delete bucket: https://docs.aws.amazon.com/cli/latest/reference/s3api/delete-bucket.html
+aws s3api delete-bucket \
+--bucket "$BUCKET_NAME"

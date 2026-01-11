@@ -2,3 +2,4 @@
 node_modules/
 AWSCLIV2.pkg
 .DS_Store
+s3/tmp/s3-bash-scripts/
