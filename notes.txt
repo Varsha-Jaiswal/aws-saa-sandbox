@@ -1,1 +1,0 @@
-jq is a command-line tool for processing JSON data like grep, awk, and sed. It helps in filtering, mapping and transforming the data. It useful because almost all output from AWS CLI commands are in JSON format by default.

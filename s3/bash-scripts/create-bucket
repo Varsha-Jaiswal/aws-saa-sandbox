@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Check if bucket name is provided
+if [ -z "$1" ]; then
+    echo "No bucket name provided. Please provide a bucket name: <bucket-name> [region]"
+    exit 1
+fi
+
+BUCKET_NAME="$1"
+
+# Check if region is provided
+if [ -z "$2" ]; then
+    REGION="us-east-1"
+else
+    REGION="$2"
+fi
+
+echo "Creating bucket \"$BUCKET_NAME\" in region \"$REGION\""
+
+# Create bucket: https://docs.aws.amazon.com/cli/latest/reference/s3api/create-bucket.html
+if [ "$REGION" == "us-east-1" ]; then
+    aws s3api create-bucket \
+    --bucket "$BUCKET_NAME" \
+    --region "$REGION"
+else
+    aws s3api create-bucket \
+    --bucket "$BUCKET_NAME" \
+    --region "$REGION" \
+    --create-bucket-configuration LocationConstraint="$REGION" \
+    --query Location \
+    --output text
+fi
