@@ -16,6 +16,6 @@ Notes: To get the current user's identity.
 
 ### S3 commands:
 
-All S3 commands are in [`commands/s3.md`](commands/s3.md)
+All S3 commands are in <a href="commands/s3.md" target="_blank">commands/s3.md</a>
 
 ---
