@@ -19,3 +19,7 @@ Notes: To get the current user's identity.
 All S3 commands are in <a href="commands/s3.md" target="_blank">commands/s3.md</a>
 
 ---
+
+### General Notes:
+
+Check out <a href="notes.md" target="_blank">notes.md</a> for general CLI usage, bash vs sh, and jq tips.
