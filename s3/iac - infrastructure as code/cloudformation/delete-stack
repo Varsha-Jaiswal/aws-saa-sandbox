@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+#https://docs.aws.amazon.com/cli/latest/reference/cloudformation/
+
+
+echo "Deleting CloudFormation stack..."
+
+if [ -z "$1" ]; then
+    echo "No stack name provided. Please provide a stack name."
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    REGION="eu-west-2"
+else
+    REGION=$2
+fi
+
+STACK_NAME=$1
+
+aws cloudformation delete-stack \
+    --stack-name "$STACK_NAME" \
+    --region "$REGION"
+
+aws cloudformation wait stack-delete-complete \
+    --stack-name "$STACK_NAME" \
+    --region "$REGION"
+
+echo "CloudFormation stack deleted successfully."
