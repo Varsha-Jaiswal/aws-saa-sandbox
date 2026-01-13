@@ -1,3 +1,4 @@
+// https://github.com/aws/aws-sdk-js-v3
 require('dotenv').config({ path: '../../../.env' });
 const { S3Client, CreateBucketCommand, PutObjectCommand, BucketAlreadyOwnedByYou } = require('@aws-sdk/client-s3');
 const fs = require('fs');
