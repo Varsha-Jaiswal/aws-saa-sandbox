@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+#https://docs.aws.amazon.com/cli/latest/reference/cloudformation/
+
+
+echo "Creating CloudFormation stack..."
+
+if [ -z "$1" ]; then
+    echo "No bucket name provided. Please provide a bucket name."
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    REGION="eu-west-2"
+else
+    REGION=$2
+fi
+
+BUCKET_NAME=$1
+
+# These are the older commands and now everything is done using deploy command.
+# aws cloudformation create-stack --stack-name s3-sandbox-vj-cfn --template-body file://template.json --capabilities CAPABILITY_NAMED_IAM
+
+# Deploy the stack. We pass the bucket name as a parameter to the template.
+aws cloudformation deploy \
+    --template-file template.json \
+    --no-execute-changeset \
+    --stack-name "$BUCKET_NAME-stack" \
+    --parameter-overrides BucketName="$BUCKET_NAME" \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --region "$REGION"
+
+    # no-execute-changeset: This will not execute the changeset and will just create the stack. then, you can go to the console and execute the changeset. After the execution, the mentioned resources will be created/updated.
