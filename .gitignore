@@ -5,3 +5,6 @@ AWSCLIV2.pkg
 s3/tmp/s3-bash-scripts/
 vendor/
 .bundle/
+.terraform/
+*.tfstate
+*.tfstate.backup
